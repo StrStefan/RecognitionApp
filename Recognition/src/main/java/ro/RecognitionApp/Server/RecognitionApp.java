@@ -56,7 +56,7 @@ public class RecognitionApp {
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactoryBean.setPackagesToScan("ro.RecognitionApp.Server");
- 
+        System.out.println("123");
         return entityManagerFactoryBean;
     }
     
@@ -68,6 +68,7 @@ public class RecognitionApp {
     }
 
     //for swagger: http://localhost:8085/swagger-ui.html
+    //
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
