@@ -68,7 +68,6 @@ public class RecognitionApp {
     }
 
     //for swagger: http://localhost:8085/swagger-ui.html
-    //
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
