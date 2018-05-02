@@ -18,4 +18,6 @@ public interface FingerPrintRepository extends CrudRepository<FingerPrint, Long>
 	@Query("UPDATE FingerPrint f SET f.personID = :personID, f.fingerNumber = :fingerNumber, f.fPrint= :fPrint WHERE f.id = :id")
 	void updateFingerPrint(@Param("id") Long id, @Param("personID") Long personID, @Param("fingerNumber") int fingerNumber, @Param("fPrint") String fPrint );
 
+	@Query("SELECT max(f.id) FROM FingerPrint f")
+	int getLastValueAsID();
 }

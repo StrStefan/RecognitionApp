@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZKFPEngXControl;
 using System.IO;
 using System.Threading;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace RecognitionFramework
 {
@@ -18,6 +13,8 @@ namespace RecognitionFramework
         private static userAdd _instance;
         AutoResetEvent doneEvent = new AutoResetEvent(false);
         BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+        BackgroundWorker backgroundSentJson = new BackgroundWorker();
+        People newPerson = new People();
 
         public static userAdd Instance
         {
@@ -33,7 +30,9 @@ namespace RecognitionFramework
         {
             InitializeComponent();
 
+            backgroundSentJson.DoWork += backgroundSentJson_DoWork;
             backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.WorkerSupportsCancellation = true;
             backgroundWorker1.DoWork += (sender, e) =>
             {
                 try
@@ -61,11 +60,43 @@ namespace RecognitionFramework
             FPrintBehavior fingerPrint = new FPrintBehavior();
             string nr = (string)e.Argument;
             fingerPrint.Save_FingerPrint(nr);
+            string path = string.Format("C:\\Users\\Stefan\\Desktop\\fPrint\\{0}.jpg", nr);
+            byte[] image = System.IO.File.ReadAllBytes(path);
+            string image_inBase64 = Convert.ToBase64String(image);
+            newPerson.FingerPrint[Int32.Parse(nr) - 1] = image_inBase64;
+        }
+
+        private void backgroundSentJson_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:8090/person/SavePerson");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = new JavaScriptSerializer().Serialize(new
+                {
+                    description = newPerson.Description,
+                    fPrint = newPerson.FingerPrint,
+                    id = newPerson.Id,
+                    name = newPerson.Name
+
+                });
+
+                streamWriter.Write(json);
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+            }
+
         }
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
-            //peopleIN = textBox1.Text;
+
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -175,7 +206,11 @@ namespace RecognitionFramework
         //Save button
         private void button1_Click(object sender, EventArgs e)
         {
-   
+            newPerson.Id = 1001; //Neimportant
+            newPerson.Name = textBox1.Text;
+            newPerson.Description = textBox2.Text;
+            backgroundSentJson.RunWorkerAsync();
+            backgroundWorker1.CancelAsync();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -198,5 +233,11 @@ namespace RecognitionFramework
 
         }
 
+        private void button12_Click(object sender, EventArgs e)
+        {
+            newPerson.ResetValues();
+            textBox1.Clear();
+            textBox2.Clear();
+        }
     }
 }

@@ -30,4 +30,9 @@ public class FingerPrintService {
 		return fingerPrintRepository.findByPersonID(personID);
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int getLastValueAsID() {
+		return fingerPrintRepository.getLastValueAsID();
+	}
+	
 }
