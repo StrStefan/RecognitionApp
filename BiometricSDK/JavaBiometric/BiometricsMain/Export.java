@@ -5,6 +5,11 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
@@ -68,11 +73,12 @@ public class Export {
 		return m_finger1.Match(finger1 , finger2,65,false);
 	}
 	
-	public String CompareType1N() {
+	public int CompareType1N(File dir, File[] dirListing) {
 		
-	    File dir=new File("E:\\FingerPrints");
-	    File[] dirListing = dir.listFiles();
+	    //File dir=new File("E:\\FingerPrints");
+	    //File[] dirListing = dir.listFiles();
 	    String output="Empty";
+	    int result=0;
 		
 	    if (dirListing != null) {
 	        for (File fingerPrintAsFile : dirListing) {
@@ -88,12 +94,130 @@ public class Export {
 			    
 			    int percentData=m_finger1.Match(finger1 , finger2,65,false);
 			    System.out.println(fingerPrintAsFile.getName()+" has:"+percentData+"%");
-	        	if(percentData>= 50) {
+	        	if(percentData>= 30) {
 	        		output=fingerPrintAsFile.getName();
+	        		String s = ""+output.charAt(0);
+	        		result=Integer.parseInt(s);
 	        		break;
 	        	}
 	        }
 	      }
-		return output;
+		return result;
 	}
+	
+    private int comparingFH = 0;
+    private int comparingSH = 0;
+	
+    int comparingFirstHalf(){
+    	
+	    String output="0";
+	    File dir=new File("E:\\FingerPrints");	    
+	    File[] dirListing = dir.listFiles();
+	    
+	    if (dirListing != null) {
+	    	
+		    int end = dirListing.length/2;
+		    File[] firstHalfList = Arrays.copyOfRange(dirListing, 0, end);
+		    
+	        for (File fingerPrintAsFile : firstHalfList) {
+	          
+				try {
+					m_bimage2=ImageIO.read(fingerPrintAsFile) ;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    m_finger2.setFingerPrintImage(m_bimage2) ;
+			    finger2=m_finger2.getFingerPrintTemplate();
+			    
+			    int percentData=m_finger1.Match(finger1 , finger2,50,false);
+			    System.out.println("1 "+fingerPrintAsFile.getName()+" has: "+percentData+"%");
+	        	if(percentData>= 50) {
+	        		output=fingerPrintAsFile.getName();
+	        		String s = ""+output.charAt(0);
+	        		comparingFH=Integer.parseInt(s);  		
+	        		break;
+	        	}
+	        }
+	      }
+        return comparingFH;
+    }
+
+    int comparingSecondHalf(){
+		
+    	String output="0";
+	    File dir=new File("E:\\FingerPrints");
+	    File[] dirListing = dir.listFiles();
+	    
+	    if (dirListing != null) {
+	    	
+		    int start = dirListing.length/2;
+		    File[] secondHalfList = Arrays.copyOfRange(dirListing, start, dirListing.length-1);
+		    
+	        for (File fingerPrintAsFile : secondHalfList) {
+	          
+				try {
+					m_bimage2=ImageIO.read(fingerPrintAsFile) ;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    m_finger2.setFingerPrintImage(m_bimage2) ;
+			    finger2=m_finger2.getFingerPrintTemplate();
+			    
+			    int percentData=m_finger1.Match(finger1 , finger2,50,false);
+			    System.out.println("2 "+fingerPrintAsFile.getName()+" has: "+percentData+"%");
+	        	if(percentData>= 50) {
+	        		output=fingerPrintAsFile.getName();
+	        		String s = ""+output.charAt(0);
+	        		comparingSH=Integer.parseInt(s);
+	        		break;
+	        	}
+	        }
+	      }
+        return comparingSH;
+    }
+
+    public int execute(){
+        
+    	int result=0;
+    	int result1=0;
+    	int result2=0;
+    	ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        // method reference introduced in Java 8
+        
+        Future<Integer> future1 = executorService.submit(this::comparingFirstHalf);
+        Future<Integer> future2 = executorService.submit(this::comparingSecondHalf);
+        
+        try {
+			result1 = future1.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        	
+        try {
+			result2 = future2.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        if( result1 != 0 )
+        	result=result1;
+        else if( result2 != 0)
+        	result=result2;
+        
+        // close executorService
+        executorService.shutdown();
+        
+        return result;
+    }
 }

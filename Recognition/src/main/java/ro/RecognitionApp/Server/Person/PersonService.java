@@ -44,8 +44,17 @@ public class PersonService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Person getByComparingFP(byte[] fingerPrintToMatch) throws IOException {
 		Export newTemplate=new Export(fingerPrintToMatch);
-		long matchedID=Integer.parseInt(""+newTemplate.CompareType1N().charAt(0));
-		return personRepository.findByid(matchedID);
+	    
+		File dir=new File("E:\\FingerPrints");
+	    File[] dirListing = dir.listFiles();
+	    long matchedID=newTemplate.CompareType1N(dir, dirListing);
+		
+	    return personRepository.findByid(matchedID);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int getLastValueAsID() {
+		return personRepository.getLastValueAsID();
 	}
 	
 }

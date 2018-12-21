@@ -22,5 +22,6 @@ public interface PersonRepository extends CrudRepository<Person, Long>{
 	@Query("UPDATE Person p SET p.name = :name, p.description = :description WHERE p.id = :id")
 	void updatePerson(@Param("id") Long id, @Param("name") String name, @Param("description") String description);
 
-	
+	@Query("SELECT max(p.id) FROM Person p")
+	int getLastValueAsID();
 }

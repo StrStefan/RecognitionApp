@@ -35,8 +35,14 @@ public class FingerPrintController {
     	byte[] binaryfPrint = DatatypeConverter.parseBase64Binary(newFingerPrint.getfPrint());
 		String link=("E:\\FingerPrints\\"+newFingerPrint.getPersonID()+"_"+newFingerPrint.getFingerNumber()+".bmp");
 		
+		System.out.println("// ** //");
+		System.out.println("");
+		System.out.println("     "+newFingerPrint.getPersonID()+"_"+newFingerPrint.getFingerNumber() +" : "+newFingerPrint.getfPrint());
+		System.out.println("");
+		System.out.println("// ** //");
+		
 		try {
-			// convert byte array to BufferedImage
+			// convert byte array to BufferedImagenewFingerPrint.getfPrint()
 			InputStream in = new ByteArrayInputStream(binaryfPrint);
 			BufferedImage bImageFromConvert = ImageIO.read(in);
 			ImageIO.write(bImageFromConvert, "bmp", new File(link));
@@ -46,6 +52,7 @@ public class FingerPrintController {
 		}	
     	newFingerPrint.setfPrint(link);
   
+    	newFingerPrint.setId(fingerPrintService.getLastValueAsID()+1);
     	return fingerPrintService.saveFingerPrint(newFingerPrint);
     	
     }
