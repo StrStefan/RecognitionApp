@@ -1,19 +1,14 @@
-package ro.RecognitionApp.Server.Person;
+package ro.utcn.recognitionserver.person;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import BiometricsMain.Export;
-import BiometricsU.CFingerPrint;
 
 @Service
 public class PersonService {
@@ -44,7 +39,7 @@ public class PersonService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Person getByComparingFP(byte[] fingerPrintToMatch) throws IOException {
 		Export newTemplate=new Export(fingerPrintToMatch);
-		long matchedID=Integer.parseInt(""+newTemplate.CompareType1N().charAt(0));
+		long matchedID=Integer.parseInt(""+newTemplate.CompareType1N());
 		return personRepository.findByid(matchedID);
 	}
 	

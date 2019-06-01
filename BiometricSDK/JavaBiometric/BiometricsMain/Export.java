@@ -73,10 +73,10 @@ public class Export {
 		return m_finger1.Match(finger1 , finger2,65,false);
 	}
 	
-	public int CompareType1N(File dir, File[] dirListing) {
+	public int CompareType1N() {
 		
-	    //File dir=new File("E:\\FingerPrints");
-	    //File[] dirListing = dir.listFiles();
+	    File dir=new File("C:\\Users\\Stefan\\Desktop\\FingerPrints");
+	    File[] dirListing = dir.listFiles();
 	    String output="Empty";
 	    int result=0;
 		

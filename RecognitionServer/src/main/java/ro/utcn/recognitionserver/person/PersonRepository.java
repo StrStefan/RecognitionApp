@@ -1,4 +1,4 @@
-package ro.RecognitionApp.Server.Person;
+package ro.utcn.recognitionserver.person;
 
 import java.util.List;
 

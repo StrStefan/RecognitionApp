@@ -1,4 +1,4 @@
-package ro.RecognitionApp.Server.FingerPrint;
+package ro.utcn.recognitionserver.fingerprint;
 
 import java.util.List;
 
@@ -7,13 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.RecognitionApp.Server.Person.Person;
-
 @Service
 public class FingerPrintService {
 
 	@Autowired
-	FingerPrintRepository fingerPrintRepository;
+	private FingerPrintRepository fingerPrintRepository;
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public FingerPrint saveFingerPrint(FingerPrint newFingerPrint) {

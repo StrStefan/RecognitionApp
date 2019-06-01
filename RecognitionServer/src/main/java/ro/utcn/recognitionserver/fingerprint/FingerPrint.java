@@ -1,4 +1,4 @@
-package ro.RecognitionApp.Server.FingerPrint;
+package ro.utcn.recognitionserver.fingerprint;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,15 +16,15 @@ public class FingerPrint {
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "personID")
+	@Column(name = "personid")
 	private long personID;
 
-	@Column(name= "fPrint")
+	@Column(name= "f_Print")
 	private String fPrint;
 
-	@Column(name= "fingerNumber")
+	@Column(name= "finger_Number")
 	private int fingerNumber;
-	
+
 	public long getId() {
 		return id;
 	}
@@ -55,5 +55,5 @@ public class FingerPrint {
 
 	public void setFingerNumber(int fingerNumber) {
 		this.fingerNumber = fingerNumber;
-	}	
+	}
 }

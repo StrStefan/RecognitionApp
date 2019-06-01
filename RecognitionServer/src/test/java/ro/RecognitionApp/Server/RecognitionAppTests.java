@@ -11,8 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ro.RecognitionApp.Server.Person.Person;
-import ro.RecognitionApp.Server.Person.PersonRepository;
+import ro.utcn.recognitionserver.person.Person;
+import ro.utcn.recognitionserver.person.PersonRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest

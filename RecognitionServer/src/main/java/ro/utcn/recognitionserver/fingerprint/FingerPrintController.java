@@ -1,6 +1,4 @@
-package ro.RecognitionApp.Server.FingerPrint;
-
-import static org.junit.Assert.assertNotNull;
+package ro.utcn.recognitionserver.fingerprint;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -19,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ro.RecognitionApp.Server.Person.Person;
-import ro.RecognitionApp.Server.Person.PersonService;
-
 @RestController
 @RequestMapping(value = "/fingerPrint")
 public class FingerPrintController {
@@ -29,7 +24,7 @@ public class FingerPrintController {
 	@Autowired
     private FingerPrintService fingerPrintService;
 	
-    @RequestMapping(value="/SaveFingerPrint", method = RequestMethod.POST)
+    @RequestMapping(value="/saveFingerPrint", method = RequestMethod.POST)
     public FingerPrint saveFingerPrint(@RequestBody FingerPrint newFingerPrint){
 		
     	byte[] binaryfPrint = DatatypeConverter.parseBase64Binary(newFingerPrint.getfPrint());
@@ -50,7 +45,7 @@ public class FingerPrintController {
     	
     }
 	
-    @RequestMapping(value="/UpdateFingerPrint", method=RequestMethod.POST)
+    @RequestMapping(value="/updateFingerPrint", method=RequestMethod.POST)
     public void updateFingerPrint(@RequestBody FingerPrint newFingerPrint) {
     	
     	byte[] binaryfPrint = DatatypeConverter.parseBase64Binary(newFingerPrint.getfPrint());

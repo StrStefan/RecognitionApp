@@ -1,4 +1,4 @@
-package ro.RecognitionApp.Server.FingerPrint;
+package ro.utcn.recognitionserver.fingerprint;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import ro.RecognitionApp.Server.Person.Person;
-
+@Repository
 public interface FingerPrintRepository extends CrudRepository<FingerPrint, Long>{
 
 	//Find fingerPrint by PersonID
