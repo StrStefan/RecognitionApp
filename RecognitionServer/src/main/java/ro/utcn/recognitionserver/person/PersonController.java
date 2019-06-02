@@ -29,18 +29,19 @@ public class PersonController {
     @RequestMapping(value="/savePerson", method = RequestMethod.POST)
     public Person savePerson(@RequestBody Person newPerson){
         
-    	personService.savePerson(newPerson);
+    	Person savedPerson =personService.savePerson(newPerson);
     	System.out.println("Person saved!");   
     	for(int i=0; i<newPerson.getfPrint().size(); i++) {
     		
     		FingerPrint newFingerPrint= new FingerPrint();
     		newFingerPrint.setId(i);
-    		newFingerPrint.setPersonID(newPerson.getId());
+    		newFingerPrint.setPersonID(savedPerson.getId());
     		newFingerPrint.setfPrint(newPerson.getfPrint().get(i));
     		newFingerPrint.setFingerNumber(i+1);
     		
     		fingerPrintController.saveFingerPrint(newFingerPrint);
     	}
+    	personService.savePerson(newPerson);
     
         return personService.savePerson(newPerson);
     }

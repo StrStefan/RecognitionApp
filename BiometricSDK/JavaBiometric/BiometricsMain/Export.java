@@ -75,7 +75,7 @@ public class Export {
 	
 	public int CompareType1N() {
 		
-	    File dir=new File("C:\\Users\\Stefan\\Desktop\\FingerPrints");
+	    File dir=new File("C:\\Users\\Stefan\\Desktop\\ServerAppPrints");
 	    File[] dirListing = dir.listFiles();
 	    String output="Empty";
 	    int result=0;

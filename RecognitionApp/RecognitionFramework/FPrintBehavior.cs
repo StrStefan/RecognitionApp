@@ -58,7 +58,7 @@ namespace RecognitionFramework
                 {
                     if (fp.GetTemplateAsString().Length > 1 && fp.LastQuality > 50 )
                     {
-                        string path = string.Format("C:\\Users\\Stefan\\Desktop\\fPrint\\{0}.jpg", buttonNr);
+                        string path = string.Format("C:\\Users\\Stefan\\Desktop\\ClientAppfPrint\\{0}.jpg", buttonNr);
                         fp.SaveJPG(path);
 
                         fPrintEnd();

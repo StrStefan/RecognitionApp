@@ -28,7 +28,7 @@ public class FingerPrintController {
     public FingerPrint saveFingerPrint(@RequestBody FingerPrint newFingerPrint){
 		
     	byte[] binaryfPrint = DatatypeConverter.parseBase64Binary(newFingerPrint.getfPrint());
-		String link=("E:\\FingerPrints\\"+newFingerPrint.getPersonID()+"_"+newFingerPrint.getFingerNumber()+".bmp");
+		String link=("C:\\Users\\Stefan\\Desktop\\ServerAppPrints\\"+newFingerPrint.getPersonID()+"_"+newFingerPrint.getFingerNumber()+".bmp");
 		
 		try {
 			// convert byte array to BufferedImage

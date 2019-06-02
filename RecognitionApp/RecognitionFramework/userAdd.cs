@@ -60,7 +60,7 @@ namespace RecognitionFramework
             FPrintBehavior fingerPrint = new FPrintBehavior();
             string nr = (string)e.Argument;
             fingerPrint.Save_FingerPrint(nr);
-            string path = string.Format("C:\\Users\\Stefan\\Desktop\\fPrint\\{0}.jpg", nr);
+            string path = string.Format("C:\\Users\\Stefan\\Desktop\\ClientAppfPrint\\{0}.jpg", nr);
             byte[] image = System.IO.File.ReadAllBytes(path);
             string image_inBase64 = Convert.ToBase64String(image);
             newPerson.FingerPrint[Int32.Parse(nr) - 1] = image_inBase64;
@@ -68,7 +68,7 @@ namespace RecognitionFramework
 
         private void backgroundSentJson_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:8090/person/SavePerson");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:8090/person/savePerson");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
